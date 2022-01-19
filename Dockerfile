@@ -4,7 +4,7 @@ ARG user=fedora
 EXPOSE 1080
 
 RUN dnf -y update \
-	&& dnf install -y java-11-openjdk-headless \
+	&& dnf install -y java-11-openjdk-headless openssl \
 	&& dnf clean all
 
 RUN useradd $user -g root
