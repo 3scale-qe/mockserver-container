@@ -42,7 +42,10 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 			statusCode: 200,
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
 			headers: {Date: [Date()]},
-			body: JSON.stringify({origin: request.headers.forwarded[0].split(\";\")[0].split(\"=\")[1]})};"}}'
+			body: JSON.stringify({origin: function() {
+				var forwarded = request.headers.forwarded;
+				if(typeof forwarded == \"undefined\") {forwarded = request.headers.Forwarded};
+				return forwarded[0].split(\";\")[0].split(\"=\")[1]}()})};"}}'
 
 curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/redirect-to"},
