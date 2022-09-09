@@ -75,3 +75,14 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
 			headers: {Date: [Date()]},
 			body: JSON.stringify(request)};"}}'
+
+curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+	"httpRequest" : {"path": "/uuid"},
+	"httpResponseTemplate": {
+		"templateType": "JAVASCRIPT",
+		"template": "return {
+			statusCode: 200,
+			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
+			headers: {Date: [Date()]},
+			body: JSON.stringify({\"uuid\": uuid})};"}}'
+
