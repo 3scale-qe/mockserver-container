@@ -16,8 +16,18 @@ jobs:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      - uses: docker/metadata-action@v4
+        id: metadata
+        with:
+          images: |
+            quay.io/mganisin/mockserver
+          flavor: |
+            latest=true
+          tags: |
+            type=sha
       - uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64,linux/ppc64le,linux/s390x
-          tags: quay.io/mganisin/mockserver
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
           push: true
