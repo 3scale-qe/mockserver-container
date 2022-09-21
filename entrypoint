@@ -3,7 +3,6 @@
 exec java \
 	-cp mockserver.jar \
 	-Dfile.encoding=UTF-8 \
-	-Dmockserver.enableCORSForAllResponses=true \
 	-Dmockserver.propertyFile=mockserver.properties \
 	org.mockserver.cli.Main \
 	-serverPort 1080 \
