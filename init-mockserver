@@ -1,6 +1,10 @@
 #!/bin/sh
 
-while ! curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+if [ -z "$MOCKSERVER" ]; then
+	MOCKSERVER=localhost:1080
+fi
+
+while ! curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"headers": {"Host": ["mockserver.*"]}},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -15,7 +19,7 @@ while ! curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 	sleep 1
 done
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/bytes/.*"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -25,7 +29,7 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 			headers: {Date: [Date()]},
 			body: \"#\".repeat(parseInt(request.path.split(\"/\")[2]))};"}}'
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/delay/.*"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -38,7 +42,7 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 				Date: [Date()]},
 			body: JSON.stringify(request)};"}}'
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/ip"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -53,7 +57,7 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 				if(typeof forwarded == \"undefined\") {forwarded = request.headers.Forwarded};
 				return forwarded[0].split(\";\")[0].split(\"=\")[1]}()})};"}}'
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/redirect-to"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -62,7 +66,7 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
 			headers: {Location: request.queryStringParameters[\"url\"]}};"}}'
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/response-headers"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -72,7 +76,7 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 			headers: request.queryStringParameters,
 			body: JSON.stringify(request)};"}}'
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/status/.*"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
@@ -84,7 +88,7 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 				Date: [Date()]},
 			body: JSON.stringify(request)};"}}'
 
-curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/uuid"},
 	"httpResponseTemplate": {
 		"templateType": "JAVASCRIPT",
