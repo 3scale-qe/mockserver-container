@@ -7,7 +7,9 @@ while ! curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 		"template": "return {
 			statusCode: 200,
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
-			headers: {Date: [Date()]},
+			headers: {
+				\"Content-Type\": [\"application/json\"],
+				Date: [Date()]},
 			body: JSON.stringify(request)};"},
 	"priority": -100}' ; do
 	sleep 1
@@ -31,7 +33,9 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 			delay: {timeUnit: \"SECONDS\", value: parseInt(request.path.split(\"/\")[2])},
 			statusCode: 200,
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
-			headers: {Date: [Date()]},
+			headers: {
+				\"Content-Type\": [\"application/json\"],
+				Date: [Date()]},
 			body: JSON.stringify(request)};"}}'
 
 curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
@@ -41,7 +45,9 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 		"template": "return {
 			statusCode: 200,
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
-			headers: {Date: [Date()]},
+			headers: {
+				\"Content-Type\": [\"application/json\"],
+				Date: [Date()]},
 			body: JSON.stringify({origin: function() {
 				var forwarded = request.headers.forwarded;
 				if(typeof forwarded == \"undefined\") {forwarded = request.headers.Forwarded};
@@ -73,7 +79,9 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 		"template": "return {
 			statusCode: parseInt(request.path.split(\"/\")[2]),
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
-			headers: {Date: [Date()]},
+			headers: {
+				\"Content-Type\": [\"application/json\"],
+				Date: [Date()]},
 			body: JSON.stringify(request)};"}}'
 
 curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
@@ -83,6 +91,8 @@ curl -f -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
 		"template": "return {
 			statusCode: 200,
 			cookies: {session: request.headers[\"Session-Id\"] && request.headers[\"Session-Id\"][0]},
-			headers: {Date: [Date()]},
+			headers: {
+				\"Content-Type\": [\"application/json\"],
+				Date: [Date()]},
 			body: JSON.stringify({\"uuid\": uuid})};"}}'
 
