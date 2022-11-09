@@ -53,9 +53,12 @@ curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 				\"Content-Type\": [\"application/json\"],
 				Date: [Date()]},
 			body: JSON.stringify({origin: function() {
-				var forwarded = request.headers.forwarded;
-				if(typeof forwarded == \"undefined\") {forwarded = request.headers.Forwarded};
-				return forwarded[0].split(\";\")[0].split(\"=\")[1]}()})};"}}'
+				var forwarded = request.headers[\"X-Forwarded-For\"] || request.headers[\"x-forwarded-for\"];
+				return forwarded[0].split(\",\")[0]
+			}()})
+		};"
+	}
+}'
 
 curl -f -v -X PUT "http://$MOCKSERVER/mockserver/expectation" -d '{
 	"httpRequest" : {"path": "/redirect-to"},
