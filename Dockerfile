@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora:latest
+FROM quay.io/fedora/fedora:41
 
 ARG user=fedora
 EXPOSE 1080
