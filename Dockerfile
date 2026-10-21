@@ -12,8 +12,8 @@ WORKDIR /home/$user
 USER $user
 ENV HOME=/home/${user}
 
-ARG MOCKSERVER_VERSION=7.4.0
-ARG GRAALVM_VERSION=23.1.4
+ARG MOCKSERVER_VERSION=9.0.0
+ARG GRAALVM_VERSION=25.4.4.1.1
 
 RUN curl -L \
     https://repo1.maven.org/maven2/org/mock-server/mockserver-netty/${MOCKSERVER_VERSION}/mockserver-netty-${MOCKSERVER_VERSION}-jar-with-dependencies.jar \
@@ -30,7 +30,9 @@ RUN MAVEN=https://repo1.maven.org/maven2 V=${GRAALVM_VERSION} && mkdir lib \
     && curl -L ${MAVEN}/org/graalvm/sdk/collections/${V}/collections-${V}.jar -o lib/collections-${V}.jar \
     && curl -L ${MAVEN}/org/graalvm/sdk/nativeimage/${V}/nativeimage-${V}.jar -o lib/nativeimage-${V}.jar \
     && curl -L ${MAVEN}/org/graalvm/sdk/jniutils/${V}/jniutils-${V}.jar -o lib/jniutils-${V}.jar \
-    && curl -L ${MAVEN}/org/graalvm/sdk/word/${V}/word-${V}.jar -o lib/word-${V}.jar
+    && curl -L ${MAVEN}/org/graalvm/sdk/nativebridge/${V}/nativebridge-${V}.jar -o lib/nativebridge-${V}.jar \
+    && curl -L ${MAVEN}/org/graalvm/sdk/word/${V}/word-${V}.jar -o lib/word-${V}.jar \
+    && curl -L ${MAVEN}/org/graalvm/shadowed/xz/${V}/xz-${V}.jar -o lib/xz-${V}.jar
 COPY --chown=$user:root . .
 RUN chmod ug+rwx . && chmod ug+r mockserver.jar
 
